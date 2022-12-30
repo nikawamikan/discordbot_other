@@ -1,0 +1,1 @@
+py-cord[speed] == 2.2.2

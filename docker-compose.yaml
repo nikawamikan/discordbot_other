@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bot:
+    build: ./bot
+    volumes:
+      - ./bot:/usr/src/bot:rw
+    environment:
+      - TOKEN=${TOKEN}
+    tty: true
+    command: ["python3", "PNR_discord.py"]
+    restart: always

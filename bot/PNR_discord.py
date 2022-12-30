@@ -1,12 +1,9 @@
 import discord
 import os
-from dotenv import load_dotenv
-from discord_buttons_plugin import *
 
-load_dotenv()
+
 TOKEN = os.getenv("TOKEN")
 bot = discord.Bot()
-buttons = ButtonsClient(bot)
 
 def check(num):
     ans=True
