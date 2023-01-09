@@ -7,6 +7,7 @@ services:
       - ./bot:/usr/src/bot:rw
     environment:
       - TOKEN=${TOKEN}
+      - GUILDS=${GUILDS}
     tty: true
-    command: ["python3", "PNR_discord.py"]
+    command: ["python3", "main.py"]
     restart: always

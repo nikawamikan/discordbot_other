@@ -7,6 +7,7 @@ TOKEN = os.getenv("TOKEN")
 GUILDS = os.getenv("GUILDS")
 intents = discord.Intents.default()
 
+print(GUILDS)
 bot = commands.Bot(
     debug_guilds=[int(v) for v in GUILDS.split(",")],
     intents=intents

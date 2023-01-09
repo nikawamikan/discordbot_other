@@ -20,9 +20,9 @@ class QR(commands.Cog):
 
     @commands.slash_command(description="URLからQRを生成するよ")
     async def qr(self, ctx: discord.ApplicationContext, text: Option(str, required=True, description="URL", )):
-        gen_QR(s.tinyurl.short(text))
-        print(s.tinyurl.short(text))
-        await ctx.respond(text, file=discord.File("QR.png"))
+        short_text = s.tinyurl.short(text)
+        gen_QR(short_text)
+        await ctx.respond(f"Original: {text}\nShotURL: {short_text}", file=discord.File("QR.png"))
 
 
 def setup(bot):
