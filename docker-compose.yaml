@@ -42,8 +42,8 @@ services:
     restart: always
     depends_on:
       - db
-    ports:
-      - 8000:80
+    networks:
+      - external_network
 
   db:
     image: mariadb:10.9.4-jammy
@@ -61,7 +61,7 @@ services:
       --collation-server=utf8mb4_general_ci
     restart: always
 
-  networks:
-    external_network:
-      external:
-        name: {NETWORK}
+networks:
+  external_network:
+    external:
+      name: ${NETWORK}
