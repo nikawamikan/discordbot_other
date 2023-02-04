@@ -22,6 +22,8 @@ services:
     restart: always
     depends_on:
       - db
+    networks:
+      - default
 
   api:
     build: ./api
@@ -42,6 +44,9 @@ services:
       - db
     networks:
       - external_network
+      - default
+    ports:
+      - 8000:80
 
   db:
     image: mariadb:10.9.4-jammy
@@ -57,9 +62,12 @@ services:
     command: >
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_general_ci
+    networks:
+      - default
     restart: always
 
 networks:
   external_network:
     external:
       name: ${NETWORK}
+  default:

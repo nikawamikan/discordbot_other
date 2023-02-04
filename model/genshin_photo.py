@@ -3,18 +3,19 @@ from datetime import datetime
 
 
 class GenshinPhoto:
-    def __init__(self, user_id: int, url: str, date: datetime):
+    def __init__(self, user_id: int, url: str, date: datetime, message_id: int):
         self.user_id = user_id
         self.url = url
         self.date = date
+        self.message_id = message_id
 
 
 def add_photo_list(genshin_photos: list[GenshinPhoto]):
     with DB(auto_commit=True) as db:
         db.insert(
             table="genshin_photo",
-            columns="user_id, url",
-            values=[(photo.user_id, photo.url) for photo in genshin_photos],
+            columns="user_id, url, message_id",
+            values=[(photo.user_id, photo.url, photo.message_id) for photo in genshin_photos],
             ignore=True,
         )
         db.execute(
@@ -26,6 +27,15 @@ def add_photo_list(genshin_photos: list[GenshinPhoto]):
             values=(max([photo.date for photo in genshin_photos]),),
         )
 
+def delete_photo(message_id):
+    with DB(auto_commit=True) as db:
+        db.execute(
+            sql="""
+            delete from genshin_photo
+            where message_id = %s
+            """,
+            values=((message_id,),),
+        )
 
 def get_photo_url_list() -> list[str]:
     with DB(auto_commit=False) as db:
@@ -65,7 +75,8 @@ def init_table():
                 create table genshin_photo(
                     id int not null auto_increment primary key,
                     user_id bigint not null,
-                    url varchar(512) not null unique
+                    url varchar(512) not null unique,
+                    message_id bigint not null
                 )
                 """
             )
