@@ -2,3 +2,5 @@ py-cord[speed] == 2.2.2
 qrcode[pil] == 7.3.1
 pyshorteners == 1.0.1
 mysqlclient == 2.1.1
+Pillow == 9.2.0
+aiofiles == 22.1.0

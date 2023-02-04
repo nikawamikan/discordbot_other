@@ -10,6 +10,7 @@ services:
       - ./bot:/usr/src/bot:rw
       - ./lib:/usr/src/bot/lib:ro
       - ./model:/usr/src/bot/model:ro
+      - ./images:/usr/src/bot/images:rw
     environment:
       - TOKEN=${TOKEN}
       - GUILDS=${GUILDS}
@@ -17,6 +18,7 @@ services:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD} 
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - HOST_URL=${HOST_URL}
     tty: true
     command: ["python3", "main.py"]
     restart: always
@@ -31,12 +33,14 @@ services:
       - ./api:/usr/src/api:rw
       - ./lib:/usr/src/api/lib:ro
       - ./model:/usr/src/api/model:ro
+      - ./images:/usr/src/api/images:rw
     environment:
       - TOKEN=${TOKEN}
       - GUILDS=${GUILDS}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD} 
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - HOST_URL=${HOST_URL}
     tty: true
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
     restart: always
