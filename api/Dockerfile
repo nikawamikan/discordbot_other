@@ -1,5 +1,5 @@
 FROM python:3.10.5-alpine3.16
-WORKDIR /usr/src/bot
+WORKDIR /usr/src/api
 RUN apk update && \
     apk add --no-cache mariadb-dev gcc libc-dev libffi-dev g++ \
     tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev lcms2-dev \
