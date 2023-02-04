@@ -34,7 +34,7 @@ async def resize_photo_and_get_filename(url: str, width: int, height: int):
         async with aiohttp.request("get", tmp) as response:
             if response.status == 200:
                 async with aiofiles.open(f"images/{v}/{file_name}", "wb") as f:
-                    f.write(await response.read())
+                    await f.write(await response.read())
     return file_name
 
 
