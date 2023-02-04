@@ -1,13 +1,77 @@
 version: '3.8'
 
+volumes:
+  fibomain:
+
 services:
   bot:
     build: ./bot
     volumes:
       - ./bot:/usr/src/bot:rw
+      - ./lib:/usr/src/bot/lib:ro
+      - ./model:/usr/src/bot/model:ro
+      - ./images:/usr/src/bot/images:rw
     environment:
       - TOKEN=${TOKEN}
       - GUILDS=${GUILDS}
+      - GENSHIN_PHOTO=${GENSHIN_PHOTO}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD} 
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - HOST_URL=${HOST_URL}
     tty: true
     command: ["python3", "main.py"]
     restart: always
+    depends_on:
+      - db
+    networks:
+      - default
+
+  api:
+    build: ./api
+    volumes:
+      - ./api:/usr/src/api:rw
+      - ./lib:/usr/src/api/lib:ro
+      - ./model:/usr/src/api/model:ro
+      - ./images:/usr/src/api/images:rw
+    environment:
+      - TOKEN=${TOKEN}
+      - GUILDS=${GUILDS}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD} 
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - HOST_URL=${HOST_URL}
+    tty: true
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - external_network
+      - default
+    ports:
+      - 8000:80
+
+  db:
+    image: mariadb:10.9.4-jammy
+    volumes:
+      - fibomain:/var/lib/mysql:rw
+    ports:
+      - 5001:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD} 
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD} 
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+    networks:
+      - default
+    restart: always
+
+networks:
+  external_network:
+    external:
+      name: ${NETWORK}
+  default:
