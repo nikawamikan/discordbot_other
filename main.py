@@ -21,6 +21,7 @@ bot.load_extensions(
     "cogs.PNR_discord",
     "cogs.QR_discord",
     "cogs.googleserch",
+    "cogs.bfgen",
     store=False
 )
 
