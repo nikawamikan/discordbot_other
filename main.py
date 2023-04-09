@@ -22,6 +22,7 @@ bot.load_extensions(
     "cogs.QR_discord",
     "cogs.googleserch",
     "cogs.bfgen",
+    "cogs.seichi",
     store=False
 )
 
