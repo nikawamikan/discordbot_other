@@ -21,13 +21,14 @@ class Seichi(commands.Cog):
         ):
             data=Seichi.get_data(text)
             embed=discord.Embed(
-                title=f"[Lv{data['levels']['seichi']['level']}☆{data['levels']['seichi']['starLevel']}] {text} ",
+                title=f"[Lv{data['levels']['seichi']['level']}☆{data['levels']['seichi']['starLevel']}] {data['player']['name']} ",
                 color=0x00ff00,
                 url=f"https://seichi.conarin.com/ranking/players/{text}"
             )
             embed.add_field(name='ランキング',value='{:,}'.format(int(data['ranks'][0]['rank'])))
             embed.add_field(name='整地量',value='{:,}'.format(int(data['ranks'][0]['value'])))
             embed.add_field(name='建築レベル',value=data['levels']['build']['level'])
+            embed.set_thumbnail(url=f"https://crafatar.com/renders/head/{data['player']['uuid']}")
             await ctx.respond(embed=embed)
 
 
