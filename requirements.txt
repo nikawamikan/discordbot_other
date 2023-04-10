@@ -1,0 +1,5 @@
+py-cord == 2.2.2
+pyshorteners
+qrcode
+requests
+python-dotenv
