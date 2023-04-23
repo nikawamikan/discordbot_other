@@ -3,3 +3,4 @@ pyshorteners
 qrcode
 requests
 python-dotenv
+beautifulsoup4

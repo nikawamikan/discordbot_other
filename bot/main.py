@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("TOKEN2")
 intents = discord.Intents.default()
 
 bot = commands.Bot(
@@ -23,6 +23,7 @@ bot.load_extensions(
     "cogs.googleserch",
     "cogs.bfgen",
     "cogs.seichi",
+    "cogs.atcoder",
     store=False
 )
 
