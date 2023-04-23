@@ -30,6 +30,9 @@ def notification_list_filter(events: list[Event]) -> list[Event]:
     date_format = "%Y%m%d%H"
     contest_time = datetime.datetime.now() + datetime.timedelta(hours=1)
     contest_time_str = contest_time.strftime(date_format)
+    print(contest_time_str)
+    for event in events:
+        print(event.time.strftime(date_format))
     return [v for v in events if v.time.strftime(date_format) == contest_time_str]
 
 
@@ -71,11 +74,12 @@ class atcoder(commands.Cog):
         embed = get_schedule_embed(events=get_data())
         await ctx.respond(embed=embed)
 
-    @tasks.loop(time=[datetime.time(i, 0, 0, 0) for i in range(24)])
+    @tasks.loop(time=[datetime.time(i//60, i % 60, 0, 0) for i in range(24 * 60)])
     async def notification(self):
         data = notification_list_filter(get_data())
         if len(data) == 0:
-            return
+            print("予定ないので全件取得する")
+            data = get_data()
         embeds = get_notification_embeds(events=data)
         await self.channel.send(content=self.role.mention, embeds=embeds)
 
