@@ -28,7 +28,7 @@ def get_data():
 
 def notification_list_filter(events: list[Event]) -> list[Event]:
     date_format = "%Y%m%d%H"
-    contest_time = datetime.datetime.now() - datetime.timedelta(hours=1)
+    contest_time = datetime.datetime.now() + datetime.timedelta(hours=1)
     contest_time_str = contest_time.strftime(date_format)
     print(contest_time_str)
     for event in events:
