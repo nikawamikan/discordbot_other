@@ -7,6 +7,13 @@ import datetime
 ATCODER_URL = 'https://atcoder.jp/contests/'
 
 
+class Event:
+    def __init__(self, title: str, url: str, time: str):
+        self.title = title
+        self.url = url
+        self.time = datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S%z")
+
+
 def get_data():
     r = requests.get(ATCODER_URL)
     soup = BeautifulSoup(r.content, "html.parser")
@@ -17,13 +24,6 @@ def get_data():
         url='https://atcoder.jp'+elem.contents[3].a.attrs['href'],
         time=elem.find('time').text
     ) for elem in elems]
-
-
-class Event:
-    def __init__(self, title: str, url: str, time: str):
-        self.title = title
-        self.url = url
-        self.time = datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S%z")
 
 
 def notification_list_filter(events: list[Event]) -> list[Event]:
