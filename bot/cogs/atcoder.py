@@ -62,11 +62,12 @@ class atcoder(commands.Cog):
         embed = get_embed(title=s, events=get_data())
         await ctx.respond(embed=embed)
 
-    @tasks.loop(time=[datetime.time(i, 0, 0, 0) for i in range(24)])
+    @tasks.loop(time=[datetime.time(i//60, i % 60, 0, 0) for i in range(24 * 60)])
     async def notification(self):
         data = notification_list_filter(get_data())
         if len(data) == 0:
-            return
+            print("予定ないので全件取得する")
+            data = get_data()
         embed = get_embed(title="1時間後に開催されるコンテスト", events=data)
         await self.channel.send(content=self.role.mention, embed=embed)
 
