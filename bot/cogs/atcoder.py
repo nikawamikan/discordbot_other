@@ -23,13 +23,14 @@ class Event:
     def __init__(self, title: str, url: str, time: str):
         self.title = title
         self.url = url
-        self.time = datetime.datetime.strptime(time, "%Y/%m/%d %H:%M:%S%z")
+        self.time = datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S%z")
 
 
 def notification_list_filter(events: list[Event]) -> list[Event]:
     date_format = "%Y%m%d%H"
-    now = datetime.datetime.now().strftime(date_format)
-    return [v for v in events if v.time.strftime(date_format) == now]
+    contest_time = datetime.datetime.now() - datetime.timedelta(hours=1)
+    contest_time_str = contest_time.strftime(date_format)
+    return [v for v in events if v.time.strftime(date_format) == contest_time_str]
 
 
 def get_embed(title: str, events: list[Event]):
@@ -57,7 +58,6 @@ class atcoder(commands.Cog):
         self,
         ctx: discord.ApplicationContext,
     ):
-        contests = get_data()
         s = "〈〈今後のコンテスト予定〉〉"
         embed = get_embed(title=s, events=get_data())
         await ctx.respond(embed=embed)
@@ -65,6 +65,8 @@ class atcoder(commands.Cog):
     @tasks.loop(time=[datetime.time(i, 0, 0, 0) for i in range(24)])
     async def notification(self):
         data = notification_list_filter(get_data())
+        if len(data) == 0:
+            return
         embed = get_embed(title="1時間後に開催されるコンテスト", events=data)
         await self.channel.send(content=self.role.mention, embed=embed)
 
