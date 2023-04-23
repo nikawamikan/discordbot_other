@@ -80,8 +80,8 @@ class atcoder(commands.Cog):
         if len(data) == 0:
             print("予定ないので全件取得する")
             data = get_data()
-        embed = get_notification_embeds(events=data)
-        await self.channel.send(content=self.role.mention, embed=embed)
+        embeds = get_notification_embeds(events=data)
+        await self.channel.send(content=self.role.mention, embeds=embeds)
 
     @notification.before_loop
     async def before(self):
