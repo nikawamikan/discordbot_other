@@ -7,5 +7,6 @@ services:
     environment:
       - TOKEN=${TOKEN}
       - TOKEN2=${TOKEN2}
+      - TZ=Asia/Tokyo
     command: ["python3", "main.py"]
     tty: true
