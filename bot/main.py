@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv("TOKEN2")
+TOKEN = os.getenv("TOKEN")
 intents = discord.Intents.default()
 
 bot = commands.Bot(

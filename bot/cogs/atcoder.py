@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import discord
 from discord.ext import commands, tasks
 import datetime
+import traceback
 
 ATCODER_URL = 'https://atcoder.jp/contests/'
 
@@ -71,13 +72,17 @@ class atcoder(commands.Cog):
         embed = get_schedule_embed(events=get_data())
         await ctx.respond(embed=embed)
 
-    @tasks.loop(time=[datetime.time(i, 0, 0, 0) for i in range(24)])
+    @tasks.loop(time=[datetime.time(i, 0, 0, 1) for i in range(24)])
     async def notification(self):
-        data = notification_list_filter(get_data())
-        if len(data) == 0:
-            return
-        embeds = get_notification_embeds(events=data)
-        await self.channel.send(content=self.role.mention, embeds=embeds)
+        try:
+            print(datetime.datetime.now())
+            data = notification_list_filter(get_data())
+            if len(data) == 0:
+                return
+            embeds = get_notification_embeds(events=data)
+            await self.channel.send(content=self.role.mention, embeds=embeds)
+        except:
+            print("loop error", traceback.format_exc())
 
     @notification.before_loop
     async def before(self):
